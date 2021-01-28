@@ -2,8 +2,9 @@ package com.github.illiaderhun.simplemessagebroker.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
@@ -18,18 +19,15 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "Role", joinColumns = @JoinColumn(name = "id"))
-    @Enumerated(EnumType.STRING)
-    private List<Role> roles;
+    private Role role;
 
     public User() {
     }
 
-    public User(String username, String password, List<Role> roles) {
+    public User(String username, String password, Role role) {
         this.username = username;
         this.password = password;
-        this.roles = roles;
+        this.role = role;
     }
 
     public Long getId() {
@@ -56,12 +54,12 @@ public class User {
         this.password = password;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override
@@ -69,12 +67,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles);
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(role, user.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, roles);
+        return Objects.hash(id, username, password, role);
     }
 
     @Override
@@ -83,7 +81,7 @@ public class User {
                 "id=" + id +
                 ", userName='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", roles=" + roles +
+                ", roles=" + role +
                 '}';
     }
 }

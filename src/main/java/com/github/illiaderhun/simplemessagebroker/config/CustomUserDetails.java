@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Provides a basic implementation of the UserDetails interface
- */
 public class CustomUserDetails implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
@@ -22,7 +19,7 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
-        this.authorities = translate(user.getRoles());
+        this.authorities = translate(user.getRole());
     }
 
     /**
@@ -31,11 +28,10 @@ public class CustomUserDetails implements UserDetails {
      * @param roles the input list of roles.
      * @return a list of granted authorities
      */
-    private Collection<? extends GrantedAuthority> translate(List<Role> roles) {
+    private Collection<? extends GrantedAuthority> translate(Role... roles) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (Role role : roles) {
             String name = role.name().toUpperCase();
-            //Make sure that all roles start with "ROLE_"
             if (!name.startsWith("ROLE_"))
                 name = "ROLE_" + name;
             authorities.add(new SimpleGrantedAuthority(name));
