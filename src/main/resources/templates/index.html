@@ -1,12 +1,64 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8" />
-    <title>SimpleMB</title>
-</head>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="peaces/header :: header('SimpleMB')"/>
 <body>
-<div class="root">
-    <h1>Simple Message Broker</h1>
+<div id="root">
+    <h1 class="text-center">Simple Message Broker</h1>
+    <div class="container">
+        <div class="row justify-content-center align-items-center" style="height:10vh">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                        Login, please
+                        <div>
+                            <div class="form-group">
+                                <input v-model="username" type="text" class="form-control" name="username" id="username"/>
+                            </div>
+                            <div class="form-group">
+                                <input v-model="password" type="password" class="form-control" name="password" id="password"/>
+                            </div>
+                            <button v-on:click.prevent="login" type="button" id="sendlogin" class="btn btn-primary">
+                                login
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<div th:replace="peaces/footer :: footer"></div>
 </body>
+<script>
+    var app = new Vue({
+        el: '#root',
+        mounted() {
+            Event.$on('logged-in', function () {
+                window.location.replace("/");
+            })
+        },
+        data: {
+            username: '',
+            password: '',
+        },
+        methods: {
+            login() {
+                var params = new URLSearchParams();
+                params.append('grant_type', 'password');
+                params.append('username', this.username);
+                params.append('password', this.password);
+                axios({
+                    method: 'post',
+                    url: 'oauth/token',
+                    auth: {username: 'smbroot', password: 'toor'},
+                    headers: {"Content-type": "application/x-www-form-urlencoded; charset=utf-8"},
+                    data: params
+                }).then(function (response) {
+                    set_cookie("access_token", response.data.access_token);
+                    document.location.replace("/admin?access_token=" + getCookie("access_token"));
+                });
+            }
+        }
+    });
+</script>
 </html>
