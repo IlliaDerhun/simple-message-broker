@@ -5,10 +5,12 @@ import com.github.illiaderhun.simplemessagebroker.repositories.MessageRepository
 import com.github.illiaderhun.simplemessagebroker.service.interfaces.reader.MessageServiceR;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class MessageServiceReader implements MessageServiceR {
 
     private final MessageRepository messageRepository;

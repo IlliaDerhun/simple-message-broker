@@ -1,6 +1,7 @@
 package com.github.illiaderhun.simplemessagebroker.controllers;
 
-import com.github.illiaderhun.simplemessagebroker.dto.StatusResponse;
+import com.github.illiaderhun.simplemessagebroker.dto.request.MessageRequest;
+import com.github.illiaderhun.simplemessagebroker.dto.response.ResponseStatus;
 import com.github.illiaderhun.simplemessagebroker.entities.Message;
 import com.github.illiaderhun.simplemessagebroker.service.interfaces.reader.MessageServiceR;
 import com.github.illiaderhun.simplemessagebroker.service.interfaces.writer.MessageServiceW;
@@ -24,7 +25,8 @@ public class MessageController {
     }
 
     @PostMapping("/publish")
-    public StatusResponse save(@RequestBody Message message) {
+    public ResponseStatus save(@RequestBody MessageRequest messageRequest) {
+        var message = new Message(messageRequest);
         return messageServiceWriter.save(message);
     }
 

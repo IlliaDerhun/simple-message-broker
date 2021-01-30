@@ -1,8 +1,8 @@
 package com.github.illiaderhun.simplemessagebroker.service.interfaces.writer;
 
 import com.github.illiaderhun.simplemessagebroker.dto.response.ResponseStatus;
-import com.github.illiaderhun.simplemessagebroker.entities.Message;
+import com.github.illiaderhun.simplemessagebroker.entities.Queue;
 
-public interface MessageServiceW {
-    ResponseStatus save(Message message);
+public interface QueueServiceW {
+    ResponseStatus save(Queue queue);
 }
