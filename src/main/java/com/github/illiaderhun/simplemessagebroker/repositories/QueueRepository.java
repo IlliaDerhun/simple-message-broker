@@ -4,6 +4,7 @@ import com.github.illiaderhun.simplemessagebroker.entities.Queue;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -13,4 +14,8 @@ public interface QueueRepository extends JpaRepository<Queue, String> {
     @Modifying
     @Query("UPDATE Queue q set q.pending = q.pending + 1 WHERE q.topic = ?1")
     void incrementPending(String topic);
+
+    @Modifying
+    @Query("UPDATE Queue q set q.pending = q.pending - :amount WHERE q.topic = :topic")
+    void decrementPending(@Param("amount") int amountMessagesPerTopic, @Param("topic") String topic);
 }

@@ -39,4 +39,9 @@ public class QueueServiceWriter implements QueueServiceW {
     public void incrementPending(String topic) {
         queueRepository.incrementPending(topic);
     }
+
+    @Override
+    public void decrementPending(int amountMessagesPerTopic, String topic) {
+        queueRepository.decrementPending(amountMessagesPerTopic, topic);
+    }
 }

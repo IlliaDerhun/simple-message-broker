@@ -5,7 +5,7 @@
 <div id="root">
     <div class="container">
         <table class="table table-hover text-center">
-            <thead class="table-dark">
+            <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Topic</th>
@@ -15,14 +15,14 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(queue, index) in queues" :key="index" :row="queue">
+            <tr v-for="(queue, index) in queues" :key="queue.id" :row="queue">
                 <th scope="col">{{ index + 1 }}</th>
                 <th>{{ queue.topic }}</th>
                 <th>{{ queue.pending }}</th>
                 <th>{{ queue.delivered }}</th>
                 <th>
-                    <button type="button" class="btn btn-warning">Purge</button>
-                    <button  v-on:click.prevent="remove(queue.topic, index)" type="button" class="btn btn-danger">Delete</button>
+                    <button v-on:click.prevent="purge(queue.topic, index)" type="button" class="btn btn-warning">Purge</button>
+                    <button v-on:click.prevent="remove(queue.topic, index)" type="button" class="btn btn-danger">Delete</button>
                 </th>
             </tr>
             </tbody>
@@ -64,6 +64,15 @@
                     } else {
                         alert("Can't delete topic: " + topic)
                     }
+                }.bind(this));
+            },
+            purge(topic, index) {
+                axios({
+                    method: 'DELETE',
+                    url: 'message/purge/' + topic + '?access_token=' + getCookie("access_token"),
+                    headers: {"Content-type": "application/json"}
+                }).then(function (response) {
+                    this.queues[index].pending = 0;
                 }.bind(this));
             }
         }

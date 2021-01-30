@@ -35,4 +35,9 @@ public class MessageController {
         return messageServiceReader.getAllMessages();
     }
 
+    @DeleteMapping("/purge/{topic:.+}")
+    public ResponseStatus purge(@PathVariable String topic) {
+        return messageServiceWriter.deleteByTopic(topic);
+    }
+
 }

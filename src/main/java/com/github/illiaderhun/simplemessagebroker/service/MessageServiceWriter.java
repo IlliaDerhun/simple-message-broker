@@ -44,7 +44,9 @@ public class MessageServiceWriter implements MessageServiceW {
 
     @Override
     public ResponseStatus deleteByTopic(String topic) {
+        int amountMessagesPerTopic = messageRepository.countByTopic(topic);
         messageRepository.deleteByTopic(topic);
+        queueServiceWriter.decrementPending(amountMessagesPerTopic, topic);
         return new ResponseStatus(Status.DELETED);
     }
 }

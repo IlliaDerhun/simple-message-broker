@@ -12,4 +12,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     @Modifying
     @Query("DELETE FROM Message m WHERE m.queue.topic = ?1")
     void deleteByTopic(String topic);
+
+    @Query("SELECT COUNT(m) FROM Message m WHERE m.queue.topic = ?1")
+    int countByTopic(String topic);
 }

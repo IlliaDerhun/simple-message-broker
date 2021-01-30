@@ -9,4 +9,6 @@ public interface QueueServiceW {
     ResponseStatus deleteByTopic(String topic);
 
     void incrementPending(String topic);
+
+    void decrementPending(int amountMessagesPerTopic, String topic);
 }
