@@ -1,4 +1,4 @@
-package com.github.illiaderhun.simplemessagebroker.service;
+package com.github.illiaderhun.simplemessagebroker.service.interfaces;
 
 import com.github.illiaderhun.simplemessagebroker.entities.User;
 

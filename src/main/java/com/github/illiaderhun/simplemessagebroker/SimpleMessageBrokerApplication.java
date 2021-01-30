@@ -4,7 +4,7 @@ import com.github.illiaderhun.simplemessagebroker.config.CustomUserDetails;
 import com.github.illiaderhun.simplemessagebroker.entities.Role;
 import com.github.illiaderhun.simplemessagebroker.entities.User;
 import com.github.illiaderhun.simplemessagebroker.repositories.UserRepository;
-import com.github.illiaderhun.simplemessagebroker.service.UserService;
+import com.github.illiaderhun.simplemessagebroker.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
