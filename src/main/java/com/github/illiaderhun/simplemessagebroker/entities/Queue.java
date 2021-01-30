@@ -23,8 +23,7 @@ public class Queue {
 
     private String peer;
 
-    @OneToMany(targetEntity = Message.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "message_id")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "queue")
     @JsonIgnore
     private List<Message> messages;
 

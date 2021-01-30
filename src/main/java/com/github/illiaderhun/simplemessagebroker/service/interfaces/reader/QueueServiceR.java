@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface QueueServiceR {
     List<Queue> getAllQueues();
+
+    Queue findByTopic(String topic);
 }

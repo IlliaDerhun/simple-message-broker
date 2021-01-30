@@ -24,4 +24,9 @@ public class QueueServiceReader implements QueueServiceR {
     public List<Queue> getAllQueues() {
         return queueRepository.findAll();
     }
+
+    @Override
+    public Queue findByTopic(String topic) {
+        return queueRepository.findByTopic(topic);
+    }
 }

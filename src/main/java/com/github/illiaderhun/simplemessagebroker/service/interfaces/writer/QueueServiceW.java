@@ -5,4 +5,8 @@ import com.github.illiaderhun.simplemessagebroker.entities.Queue;
 
 public interface QueueServiceW {
     ResponseStatus save(Queue queue);
+
+    ResponseStatus deleteByTopic(String topic);
+
+    void incrementPending(String topic);
 }

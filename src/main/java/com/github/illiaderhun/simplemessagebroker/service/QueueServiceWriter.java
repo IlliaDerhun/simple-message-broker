@@ -25,4 +25,18 @@ public class QueueServiceWriter implements QueueServiceW {
         var saved = queueRepository.save(queue);
         return saved != null ? new ResponseStatus(Status.SAVED) : new ResponseStatus(Status.ERROR);
     }
+
+    @Override
+    public ResponseStatus deleteByTopic(String topic) {
+        if (!queueRepository.exists(topic)) {
+            return new ResponseStatus(Status.ERROR, "The topic with name: " + topic + " doesn't exist");
+        }
+        queueRepository.delete(topic);
+        return new ResponseStatus(Status.DELETED, "The topic with name: " + topic + " has been delete");
+    }
+
+    @Override
+    public void incrementPending(String topic) {
+        queueRepository.incrementPending(topic);
+    }
 }

@@ -36,4 +36,9 @@ public class QueueController {
         queue.setId(UUID.randomUUID());
         return queueServiceWriter.save(queue);
     }
+
+    @DeleteMapping("/delete/{topic:.+}")
+    public ResponseStatus delete(@PathVariable String topic) {
+        return queueServiceWriter.deleteByTopic(topic);
+    }
 }

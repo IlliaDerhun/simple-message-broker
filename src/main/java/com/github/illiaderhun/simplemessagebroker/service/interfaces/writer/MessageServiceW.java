@@ -5,4 +5,6 @@ import com.github.illiaderhun.simplemessagebroker.entities.Message;
 
 public interface MessageServiceW {
     ResponseStatus save(Message message);
+
+    ResponseStatus deleteByTopic(String topic);
 }

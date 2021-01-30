@@ -3,8 +3,70 @@
 <head th:replace="peaces/header :: header('SimpleMB')"/>
 <body>
 <div id="root">
-    <h1>Admin Simple Message Broker</h1>
+    <div class="container">
+        <table class="table table-hover text-center">
+            <thead class="table-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Topic</th>
+                <th scope="col">Pending</th>
+                <th scope="col">Delivered</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(queue, index) in queues" :key="index" :row="queue">
+                <th scope="col">{{ index + 1 }}</th>
+                <th>{{ queue.topic }}</th>
+                <th>{{ queue.pending }}</th>
+                <th>{{ queue.delivered }}</th>
+                <th>
+                    <button type="button" class="btn btn-warning">Purge</button>
+                    <button  v-on:click.prevent="remove(queue.topic, index)" type="button" class="btn btn-danger">Delete</button>
+                </th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <div th:replace="peaces/footer :: footer"></div>
 </body>
+<script>
+    var app = new Vue({
+        el: '#root',
+        mounted() {
+            Event.$on('logged-in', function () {
+                window.location.replace("/");
+            });
+            this.fetchQueues();
+        },
+        data: {
+            queues: []
+        },
+        methods: {
+            fetchQueues() {
+                axios({
+                    method: 'GET',
+                    url: 'queue/all?access_token=' + getCookie("access_token"),
+                    headers: {"Content-type": "application/json"}
+                }).then(function (response) {
+                    this.queues = response.data;
+                }.bind(this));
+            },
+            remove(topic, index) {
+                axios({
+                    method: 'DELETE',
+                    url: 'queue/delete/' + topic + '?access_token=' + getCookie("access_token"),
+                    headers: {"Content-type": "application/json"}
+                }).then(function (response) {
+                    if (response.data.status === "DELETED") {
+                        this.queues.splice(index, 1);
+                    } else {
+                        alert("Can't delete topic: " + topic)
+                    }
+                }.bind(this));
+            }
+        }
+    });
+</script>
 </html>
