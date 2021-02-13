@@ -3,7 +3,8 @@
 <head th:replace="peaces/header :: header('SimpleMB')"/>
 <body>
 <div id="root">
-    <h1 class="text-left">{{ topic.topic }}</h1>
+    <button v-on:click.prevent="backToQueues()" type="button" class="btn btn-secondary">Back to Queues</button>
+    <h1 class="text-center">{{ topic.topic }}</h1>
     <div class="leftContainer">
         <div class="row">
             <div class="col">
@@ -28,7 +29,27 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col"></div>
+            <div class="col">
+                <table class="table table-hover w-auto">
+                    <button v-show="messages.first !== true" v-on:click.prevent="previousPage()" type="button">Previous </button>
+                    <span> Current page is {{ messages.number + 1 }} out of {{ messages.totalPages }}</span>
+                    <button v-show="messages.last !== true" v-on:click.prevent="nextPage()" type="button"> Next</button>
+                    <thead style="position: sticky;top: 0" class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Message Body</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(message, index) in messages.content" :key="message.id" :row="message">
+                        <th>{{ message.id }}</th>
+                        <th><textarea cols="10" rows="5">{{ message.body }}</textarea></th>
+                        <th><button v-on:click.prevent="remove(message.id)" type="button" class="btn btn-danger">Delete</button></th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -42,9 +63,11 @@
                 window.location.replace("/");
             });
             this.getTopicInfo();
+            this.getMessages(0, 5);
         },
         data: {
-            topic: ""
+            topic: "",
+            messages: []
         },
         methods: {
             getTopicInfo() {
@@ -56,6 +79,26 @@
             getTopicName() {
                 let splitted = window.location.href.split('/');
                 return splitted[splitted.length - 1];
+            },
+            getMessages(page, limit) {
+                axios.post('/message/byTopic/' + this.getTopicName() + '?access_token=' + getCookie("access_token"), {
+                    "page": page,
+                    "limitPerPage": limit
+                }).then(function (response) {
+                        this.messages = response.data;
+                    }.bind(this));
+            },
+            backToQueues() {
+                document.location.replace("/admin?access_token=" + getCookie("access_token"));
+            },
+            nextPage() {
+                this.getMessages(this.messages.number + 1, 5);
+            },
+            previousPage() {
+                this.getMessages(this.messages.number - 1, 5);
+            },
+            remove(messageId) {
+                alert(messageId);
             }
         }
     });

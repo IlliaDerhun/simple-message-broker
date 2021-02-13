@@ -6,6 +6,7 @@ import com.github.illiaderhun.simplemessagebroker.entities.Message;
 import com.github.illiaderhun.simplemessagebroker.service.interfaces.reader.MessageServiceR;
 import com.github.illiaderhun.simplemessagebroker.service.interfaces.writer.MessageServiceW;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +39,11 @@ public class MessageController {
     @DeleteMapping("/purge/{topic:.+}")
     public ResponseStatus purge(@PathVariable String topic) {
         return messageServiceWriter.deleteByTopic(topic);
+    }
+
+    @PostMapping("/byTopic/{topic:.+}")
+    public Page<Message> getMessageByTopic(@PathVariable String topic, @RequestBody MessageRequest messageRequest) {
+        return messageServiceReader.getMessageByTopic(topic, messageRequest.getPage());
     }
 
 }
