@@ -41,4 +41,9 @@ public class QueueController {
     public ResponseStatus delete(@PathVariable String topic) {
         return queueServiceWriter.deleteByTopic(topic);
     }
+
+    @GetMapping("/{topic:.+}")
+    public Queue getByTopicName(@PathVariable String topic) {
+        return queueServiceReader.findByTopic(topic);
+    }
 }

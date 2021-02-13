@@ -15,4 +15,9 @@ public class ViewController {
     public String admin() {
         return "admin";
     }
+
+    @GetMapping("/topic/{topic:.+}")
+    public String topic() {
+        return "topic";
+    }
 }

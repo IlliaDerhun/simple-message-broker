@@ -5,7 +5,7 @@
 <div id="root">
     <div class="container">
         <table class="table table-hover text-center">
-            <thead class="thead-dark">
+            <thead style="position: sticky;top: 0" class="thead-dark">
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Topic</th>
@@ -17,7 +17,7 @@
             <tbody>
             <tr v-for="(queue, index) in queues" :key="queue.id" :row="queue">
                 <th scope="col">{{ index + 1 }}</th>
-                <th>{{ queue.topic }}</th>
+                <th><a :href="getLink(queue.topic)">{{ queue.topic }}</a></th>
                 <th>{{ queue.pending }}</th>
                 <th>{{ queue.delivered }}</th>
                 <th>
@@ -74,6 +74,9 @@
                 }).then(function (response) {
                     this.queues[index].pending = 0;
                 }.bind(this));
+            },
+            getLink(topic){
+                return '/topic/' + topic;
             }
         }
     });

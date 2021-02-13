@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="peaces/header :: header('SimpleMB')"/>
+<body>
+<div id="root">
+    <h1 class="text-left">{{ topic.topic }}</h1>
+    <div class="leftContainer">
+        <div class="row">
+            <div class="col">
+                <table class="table table-hover table-sm w-auto">
+                    <tbody>
+                    <tr>
+                        <th scope="row">UUID:</th>
+                        <th>{{ topic.id }}</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">Pending:</th>
+                        <th>{{ topic.pending }}</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">Delivered:</th>
+                        <th>{{ topic.delivered }}</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">Peer:</th>
+                        <th>{{ topic.peer }}</th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+</div>
+<div th:replace="peaces/footer :: footer"></div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#root',
+        mounted() {
+            Event.$on('logged-in', function () {
+                window.location.replace("/");
+            });
+            this.getTopicInfo();
+        },
+        data: {
+            topic: ""
+        },
+        methods: {
+            getTopicInfo() {
+                axios.get('/queue/' + this.getTopicName() + '?access_token=' + getCookie("access_token"))
+                    .then(function (response) {
+                        this.topic = response.data;
+                    }.bind(this));
+            },
+            getTopicName() {
+                let splitted = window.location.href.split('/');
+                return splitted[splitted.length - 1];
+            }
+        }
+    });
+</script>
+</html>
